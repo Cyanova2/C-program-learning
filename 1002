@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int a;
+    int b;
+    int c;
+} Equation;
+
+int check(int n, int mask) {
+    while (n > 0) {
+        int d = n % 10;
+        if (d == 0) return 0;
+        if ((mask >> d) & 1) return 0;
+        mask = mask | (1 << d);
+        n = n / 10;
+    }
+    return mask;
+}
+
+int compare(const void *p1, const void *p2) {
+    Equation *e1 = (Equation *)p1;
+    Equation *e2 = (Equation *)p2;
+    if (e1->c != e2->c)
+        return e1->c - e2->c;
+    else
+        return e1->a - e2->a;
+}
+
+int main() {
+    Equation ans[100];
+    int count = 0;
+
+    for (int a = 1; a <= 99; a++) {
+        int mask1 = check(a, 0);
+        if (mask1 == 0) continue;
+
+        for (int b = a; b <= 9876 / a; b++) {
+            int mask2 = check(b, mask1);
+            if (mask2 == 0) continue;
+
+            int c = a * b;
+            int mask3 = check(c, mask2);
+            if (mask3 == 0) continue;
+
+            if (mask3 == 1022) {
+                ans[count].a = a;
+                ans[count].b = b;
+                ans[count].c = c;
+                count++;
+            }
+        }
+    }
+
+    qsort(ans, count, sizeof(Equation), compare);
+
+    for (int i = 0; i < count; i++) {
+        printf("%d = %d x %d\n", ans[i].c, ans[i].a, ans[i].b);
+    }
+
+    return 0;
+}
