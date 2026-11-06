@@ -1,0 +1,35 @@
+#include <stdio.h>
+
+int main() {
+    int T;
+    if (scanf("%d", &T) != 1) return 0;
+
+    while (T--) {
+        int n;
+        scanf("%d", &n);
+
+        long long max_val = -1e18; 
+        long long min_val = 1e18;  
+        long long sum = 0;         
+        long long sum_sq = 0;      
+
+        for (int i = 0; i < n; i++) {
+            long long a;
+            scanf("%lld", &a);
+
+            if (a > max_val) max_val = a;
+            if (a < min_val) min_val = a;
+
+            sum += a;
+            sum_sq += a * a;
+        }
+
+        long long range = max_val - min_val;
+        double mean = (double)sum / n;
+        double variance = ((double)sum_sq / n) - (mean * mean);
+
+        printf("%lld %.3f\n", range, variance);
+    }
+
+    return 0;
+}
