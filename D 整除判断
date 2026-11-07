@@ -1,13 +1,39 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-int main() {
-    long long m, n; 
-    
-    scanf("%lld %lld", &m, &n); 
-    
-    if (m % n == 0) {
-        printf("YES\n"); 
-    } else {
-        printf("NO\n");
+#define MAXN 25
+#define BUF_LEN 100
+
+char strArr[MAXN][BUF_LEN];
+int cmp(const void *p1, const void *p2)
+{
+    char *a = *(char **)p1;
+    char *b = *(char **)p2;
+    char s1[200], s2[200];
+    strcpy(s1, a);
+    strcat(s1, b);   
+    strcpy(s2, b);
+    strcat(s2, a); 
+    return strcmp(s2, s1);
+}
+
+int main(void)
+{
+    int n;
+    scanf("%d", &n);
+    char *ptrArr[MAXN];
+    for(int i = 0; i < n; i++)
+    {
+        scanf("%s", strArr[i]);
+        ptrArr[i] = strArr[i];
     }
-    
+    qsort(ptrArr, n, sizeof(char *), cmp);
+
+    for(int i = 0; i < n; i++)
+    {
+        printf("%s", ptrArr[i]);
+    }
+    printf("\n");
+    return 0;
+}
